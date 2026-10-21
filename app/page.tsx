@@ -10,6 +10,7 @@ const introSteps = [
 ];
 
 type Stage = "intro" | "opening" | "letter";
+const MUSIC_VOLUME = 0.26;
 
 function HeartIcon({ className = "" }: { className?: string }) {
   return (
@@ -129,46 +130,88 @@ function BackgroundStickers() {
   );
 }
 
-function playOpeningChime() {
-  try {
-    const audio = new AudioContext();
-    const start = audio.currentTime;
-    [523.25, 659.25, 783.99].forEach((frequency, index) => {
-      const oscillator = audio.createOscillator();
-      const volume = audio.createGain();
-      oscillator.type = "sine";
-      oscillator.frequency.value = frequency;
-      volume.gain.setValueAtTime(0.0001, start + index * 0.12);
-      volume.gain.exponentialRampToValueAtTime(0.035, start + index * 0.12 + 0.025);
-      volume.gain.exponentialRampToValueAtTime(0.0001, start + index * 0.12 + 0.5);
-      oscillator.connect(volume);
-      volume.connect(audio.destination);
-      oscillator.start(start + index * 0.12);
-      oscillator.stop(start + index * 0.12 + 0.52);
-    });
-    window.setTimeout(() => void audio.close(), 1200);
-  } catch {
-    // Some browsers block audio; the letter still opens normally.
-  }
-}
-
 export default function Home() {
   const [step, setStep] = useState(0);
   const [stage, setStage] = useState<Stage>("intro");
   const [soundOn, setSoundOn] = useState(true);
+  const [musicNeedsTap, setMusicNeedsTap] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const letterHeading = useRef<HTMLHeadingElement>(null);
+  const music = useRef<HTMLAudioElement>(null);
+  const audioContext = useRef<AudioContext | null>(null);
+  const musicGain = useRef<GainNode | null>(null);
 
   useEffect(() => {
     if (stage === "letter") letterHeading.current?.focus();
   }, [stage]);
 
+  useEffect(() => {
+    if (stage === "letter" && soundOn) setMusicVolume(MUSIC_VOLUME, 1.5);
+  }, [stage, soundOn]);
+
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current);
+    music.current?.pause();
+    void audioContext.current?.close();
   }, []);
 
+  function setMusicVolume(level: number, seconds = 0) {
+    const context = audioContext.current;
+    const gain = musicGain.current;
+    if (!context || !gain) return;
+    const now = context.currentTime;
+    gain.gain.cancelScheduledValues(now);
+    gain.gain.setValueAtTime(gain.gain.value, now);
+    if (seconds > 0) gain.gain.linearRampToValueAtTime(level, now + seconds);
+    else gain.gain.setValueAtTime(level, now);
+  }
+
+  function startMusic() {
+    const track = music.current;
+    if (!track) return;
+    try {
+      if (!audioContext.current) {
+        const context = new AudioContext();
+        const source = context.createMediaElementSource(track);
+        const gain = context.createGain();
+        gain.gain.value = 0;
+        source.connect(gain);
+        gain.connect(context.destination);
+        audioContext.current = context;
+        musicGain.current = gain;
+      }
+      setMusicVolume(0);
+      void audioContext.current.resume().catch(() => {
+        track.pause();
+        setSoundOn(false);
+        setMusicNeedsTap(true);
+      });
+      void track.play().then(() => setMusicNeedsTap(false)).catch(() => {
+        setMusicVolume(0);
+        setSoundOn(false);
+        setMusicNeedsTap(true);
+      });
+    } catch {
+      setSoundOn(false);
+      setMusicNeedsTap(true);
+    }
+  }
+
+  function toggleSound() {
+    if (soundOn) {
+      music.current?.pause();
+      setMusicVolume(0);
+      setMusicNeedsTap(false);
+      setSoundOn(false);
+    } else {
+      setSoundOn(true);
+      if (stage !== "intro") startMusic();
+      if (stage === "letter") setMusicVolume(MUSIC_VOLUME, 1.2);
+    }
+  }
+
   function openLetter() {
-    if (soundOn) playOpeningChime();
+    if (soundOn) startMusic();
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) {
       setStage("letter");
@@ -185,6 +228,7 @@ export default function Home() {
 
   return (
     <div className={`site-shell stage-${stage}`}>
+      <audio ref={music} src="/audio/nhac-nen-mashup.mp3" preload="metadata" loop />
       <div className="background-glow glow-one" aria-hidden="true" />
       <div className="background-glow glow-two" aria-hidden="true" />
       <div className="background-dots" aria-hidden="true" />
@@ -200,10 +244,10 @@ export default function Home() {
           <button
             className="sound-toggle"
             type="button"
-            aria-label={soundOn ? "Tắt âm thanh" : "Bật âm thanh"}
+            aria-label={soundOn ? "Tắt nhạc nền" : "Bật nhạc nền"}
             aria-pressed={soundOn}
-            title={soundOn ? "Tắt âm thanh" : "Bật âm thanh"}
-            onClick={() => setSoundOn((current) => !current)}
+            title={soundOn ? "Tắt nhạc nền" : "Bật nhạc nền"}
+            onClick={toggleSound}
           >
             <SoundIcon muted={!soundOn} />
           </button>
@@ -275,6 +319,7 @@ export default function Home() {
           <div className="letter-intro">
             <span className="eyebrow">MỘT MÓN QUÀ NHỎ</span>
             <p>từ anh Dương Đỏ, gửi riêng cho em.</p>
+            {musicNeedsTap && <p className="music-hint">Chạm biểu tượng loa để bật nhạc nhé ♡</p>}
           </div>
 
           <div className="letter-scene">
