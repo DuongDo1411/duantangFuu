@@ -26,7 +26,7 @@ body {
 }
 
 button { font: inherit; cursor: pointer; }
-button:focus-visible, h1:focus-visible { outline: 3px solid var(--pink-accent); outline-offset: 5px; }
+button:focus-visible { outline: 3px solid var(--pink-accent); outline-offset: 5px; }
 
 .site-shell {
   position: relative;
@@ -237,15 +237,15 @@ button:focus-visible, h1:focus-visible { outline: 3px solid var(--pink-accent); 
 .letter-paper-top svg { width: 25px; height: 25px; color: #d2889e; }
 .letter-content { padding: 59px 76px 67px; }
 .letter-content h1 { margin: 18px 0 48px; font-family: "Mali", cursive; color: #754253; font-weight: 600; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.32; letter-spacing: -.035em; }
-.letter-placeholder {
-  min-height: 226px;
-  color: #8d7476;
-  font-size: 16px;
-  line-height: 1.85;
+.letter-body {
+  max-width: 62ch;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
 }
-.letter-placeholder p { margin: 0 0 39px; font-style: italic; }
-.writing-line { display: block; height: 1px; width: 100%; background: #eaded7; margin-bottom: 38px; }
-.writing-line.short { width: 62%; }
+.letter-body p { margin: 0 0 1.45em; }
+.letter-body p:last-child { margin-bottom: 0; }
 .letter-signature { display: flex; align-items: flex-start; flex-direction: column; margin-top: 30px; gap: 7px; color: #785f63; font-size: 14px; }
 .letter-signature strong { font-family: "Mali", cursive; color: var(--pink-deep); font-size: 30px; font-weight: 700; transform: rotate(-4deg); }
 .letter-paper-bottom { border-top: 1px solid var(--paper-edge); margin: 0 58px; min-height: 88px; gap: 12px; color: #aa8990; font-size: 9px; font-weight: 700; letter-spacing: .18em; }
@@ -322,7 +322,7 @@ button:focus-visible, h1:focus-visible { outline: 3px solid var(--pink-accent); 
   .letter-paper-top { min-height: 58px; padding-inline: 32px; }
   .letter-content { padding: 47px 38px 58px; }
   .letter-content h1 { margin: 16px 0 43px; font-size: clamp(29px, 7vw, 39px); }
-  .letter-placeholder { font-size: 14px; }
+  .letter-body { font-size: 16px; line-height: 1.8; }
   .letter-paper-bottom { min-height: 76px; margin-inline: 31px; font-size: 8px; }
   .wax-seal { width: 43px; height: 43px; }
   .wax-seal svg { width: 22px; height: 22px; }
