@@ -13,7 +13,7 @@ type Stage = "intro" | "opening" | "letter" | "surprise";
 const LETTER_MUSIC_VOLUME = 0.26;
 const SURPRISE_MUSIC_VOLUME = 0.08;
 const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
-const SURPRISE_TRACK = "/audio/mua-yeu-dau.mp3";
+const SURPRISE_TRACK = "/audio/mua-yeu-dau-tu-giay-14.mp3";
 
 function HeartIcon({ className = "" }: { className?: string }) {
   return (
