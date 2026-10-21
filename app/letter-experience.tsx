@@ -9,8 +9,11 @@ const introSteps = [
   "Sẵn sàng chưa, bắt đầu nè",
 ];
 
-type Stage = "intro" | "opening" | "letter";
-const MUSIC_VOLUME = 0.26;
+type Stage = "intro" | "opening" | "letter" | "surprise";
+const LETTER_MUSIC_VOLUME = 0.26;
+const SURPRISE_MUSIC_VOLUME = 0.08;
+const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
+const SURPRISE_TRACK = "/audio/mua-yeu-dau.mp3";
 
 function HeartIcon({ className = "" }: { className?: string }) {
   return (
@@ -137,16 +140,20 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   const [musicNeedsTap, setMusicNeedsTap] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const letterHeading = useRef<HTMLHeadingElement>(null);
+  const surpriseHeading = useRef<HTMLHeadingElement>(null);
   const music = useRef<HTMLAudioElement>(null);
   const audioContext = useRef<AudioContext | null>(null);
   const musicGain = useRef<GainNode | null>(null);
 
   useEffect(() => {
     if (stage === "letter") letterHeading.current?.focus();
+    if (stage === "surprise") surpriseHeading.current?.focus();
   }, [stage]);
 
   useEffect(() => {
-    if (stage === "letter" && soundOn) setMusicVolume(MUSIC_VOLUME, 1.5);
+    if (!soundOn) return;
+    if (stage === "letter") setMusicVolume(LETTER_MUSIC_VOLUME, 1.5);
+    if (stage === "surprise") setMusicVolume(SURPRISE_MUSIC_VOLUME, 1.2);
   }, [stage, soundOn]);
 
   useEffect(() => () => {
@@ -197,6 +204,16 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
     }
   }
 
+  function switchMusic(source: string) {
+    const track = music.current;
+    if (!track) return;
+    setMusicVolume(0);
+    track.pause();
+    track.src = source;
+    track.load();
+    if (soundOn) startMusic();
+  }
+
   function toggleSound() {
     if (soundOn) {
       music.current?.pause();
@@ -206,8 +223,19 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
     } else {
       setSoundOn(true);
       if (stage !== "intro") startMusic();
-      if (stage === "letter") setMusicVolume(MUSIC_VOLUME, 1.2);
     }
+  }
+
+  function openSurprise() {
+    switchMusic(SURPRISE_TRACK);
+    setStage("surprise");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
+  function returnToLetter() {
+    switchMusic(LETTER_TRACK);
+    setStage("letter");
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   function openLetter() {
@@ -228,7 +256,7 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
 
   return (
     <div className={`site-shell stage-${stage}`}>
-      <audio ref={music} src="/audio/nhac-nen-mashup.mp3" preload="metadata" loop />
+      <audio ref={music} src={LETTER_TRACK} preload="metadata" loop />
       <div className="background-glow glow-one" aria-hidden="true" />
       <div className="background-glow glow-two" aria-hidden="true" />
       <div className="background-dots" aria-hidden="true" />
@@ -344,6 +372,12 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
                   <span>Thương em,</span>
                   <strong>Dương Đỏ</strong>
                 </div>
+                <div className="letter-next">
+                  <button className="primary-button" type="button" onClick={openSurprise}>
+                    Coi tiếp bất ngờ
+                    <ArrowIcon />
+                  </button>
+                </div>
               </div>
               <div className="letter-paper-bottom">
                 <span>MỘT CHÚT THƯƠNG · MỘT CHÚT NGỌT</span>
@@ -354,6 +388,47 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
             <div className="letter-otter-wrap" aria-hidden="true">
               <img src="/otter.svg" alt="" className="letter-otter" />
               <span>cho em nè!</span>
+            </div>
+          </div>
+        </main>
+      )}
+
+      {stage === "surprise" && (
+        <main className="surprise-layout">
+          <button className="surprise-back" type="button" onClick={returnToLetter}>
+            <ArrowIcon back />
+            Đọc lại thư
+          </button>
+
+          <div className="surprise-intro">
+            <span className="eyebrow">BẤT NGỜ NHO NHỎ · 20.10</span>
+            <h1 ref={surpriseHeading} tabIndex={-1}>Một điều anh muốn nói với em</h1>
+            <p>Giữ lại một góc thật xinh cho đoạn video anh tự quay ♡</p>
+            {musicNeedsTap && <p className="music-hint">Chạm biểu tượng loa để bật nhạc nhé ♡</p>}
+          </div>
+
+          <div className="video-scene">
+            <Chocolate className="video-chocolate" />
+            <span className="video-sparkle video-sparkle-one" aria-hidden="true">✳</span>
+            <span className="video-sparkle video-sparkle-two" aria-hidden="true">✳</span>
+            <div className="video-frame">
+              <div className="video-frame-top">
+                <span className="video-frame-dots" aria-hidden="true"><i /><i /><i /></span>
+                <span>MỘT THƯỚC PHIM GỬI EM</span>
+                <HeartIcon />
+              </div>
+              <div className="video-window">
+                <div className="video-window-heart" aria-hidden="true"><HeartIcon /></div>
+                <p>Video của anh sẽ ở đây</p>
+                <span>Chờ anh mang điều bất ngờ vào khung hình này nhé ♡</span>
+              </div>
+              <div className="video-frame-bottom">
+                <span>chỉ dành riêng cho em</span>
+                <span>♡</span>
+              </div>
+            </div>
+            <div className="video-otter-wrap" aria-hidden="true">
+              <img src="/otter.svg" alt="" />
             </div>
           </div>
         </main>
