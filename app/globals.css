@@ -52,6 +52,16 @@ button:focus-visible, h1:focus-visible { outline: 3px solid var(--pink-accent); 
   background-size: 26px 26px;
   mask-image: linear-gradient(90deg, #000 0, transparent 30%, transparent 72%, #000 100%);
 }
+.background-stickers { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.background-sticker { position: absolute; width: 54px; height: auto; opacity: .78; filter: drop-shadow(0 7px 7px rgba(143, 75, 90, .11)); }
+.sticker-berry-one { left: 17%; top: 15%; width: 55px; transform: rotate(-16deg); }
+.sticker-flower-one { right: 8%; top: 20%; width: 61px; transform: rotate(14deg); }
+.sticker-bow { right: 17%; top: 43%; width: 69px; transform: rotate(16deg); }
+.sticker-envelope { left: 7%; top: 47%; width: 66px; transform: rotate(-13deg); }
+.sticker-heart { right: 15%; top: 64%; width: 45px; transform: rotate(-14deg); }
+.sticker-flower-two { left: 28%; bottom: 8%; width: 39px; transform: rotate(-18deg); }
+.sticker-berry-two { right: 29%; bottom: 5%; width: 38px; transform: rotate(21deg); }
+.sticker-star { right: 28%; top: 11%; width: 34px; transform: rotate(13deg); }
 
 .topbar, .site-footer {
   width: min(1320px, calc(100% - 104px));
@@ -257,6 +267,14 @@ button:focus-visible, h1:focus-visible { outline: 3px solid var(--pink-accent); 
 @keyframes seal-away { to { opacity: 0; transform: scale(.75); } }
 
 @media (max-width: 1000px) {
+  .sticker-berry-one { left: 9%; top: 13%; width: 47px; }
+  .sticker-flower-one { right: 5%; top: 15%; width: 52px; }
+  .sticker-bow { right: 5%; top: 44%; width: 54px; }
+  .sticker-envelope { left: 1%; top: 49%; width: 50px; }
+  .sticker-heart { right: 3%; top: 68%; width: 38px; }
+  .sticker-flower-two { left: 33%; bottom: 7%; width: 36px; }
+  .sticker-berry-two { right: 24%; bottom: 6%; width: 34px; }
+  .sticker-star { right: 23%; top: 10%; width: 30px; }
   .intro-side-note { left: 0; top: 4%; font-size: 14px; }
   .intro-otter-wrap { width: 180px; left: -4%; bottom: 0; }
   .intro-chocolate { right: -2%; width: 80px; height: 108px; }
@@ -266,6 +284,15 @@ button:focus-visible, h1:focus-visible { outline: 3px solid var(--pink-accent); 
 }
 
 @media (max-width: 700px) {
+  .background-sticker { opacity: .72; }
+  .sticker-berry-one { left: -10px; top: 15%; width: 39px; }
+  .sticker-flower-one { right: -10px; top: 18%; width: 43px; }
+  .sticker-bow { right: 0; top: 68%; width: 42px; }
+  .sticker-envelope { left: -12px; top: 50%; width: 44px; }
+  .sticker-heart { right: -11px; top: 49%; width: 36px; }
+  .sticker-flower-two { left: 45%; bottom: 7%; width: 34px; }
+  .sticker-berry-two { right: 6%; bottom: 4%; width: 34px; }
+  .sticker-star { right: 22%; top: 12%; width: 25px; }
   .topbar, .site-footer, .intro-layout, .letter-layout { width: min(100% - 34px, 560px); }
   .topbar { padding-block: 19px; }
   .brand { font-size: 13px; gap: 7px; }

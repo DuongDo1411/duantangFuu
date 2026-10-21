@@ -56,6 +56,79 @@ function Chocolate({ className = "" }: { className?: string }) {
   );
 }
 
+type StickerKind = "strawberry" | "flower" | "bow" | "envelope" | "heart" | "star";
+
+function Sticker({ kind, className }: { kind: StickerKind; className: string }) {
+  const content = {
+    strawberry: (
+      <>
+        <path d="M50 27C26 16 13 37 24 64c7 18 19 29 26 31 7-2 19-13 26-31 11-27-2-48-26-37Z" fill="#E77691" stroke="#C95C7A" strokeWidth="3" />
+        <path d="M50 29c-11-14-26-8-28-1 12-2 20 1 28 9 8-8 16-11 28-9-2-7-17-13-28 1Z" fill="#8FB8A0" stroke="#6E9C87" strokeWidth="2" />
+        <path d="M50 27c-4-11-1-19 5-23" stroke="#6E9C87" strokeWidth="4" strokeLinecap="round" />
+        <g fill="#FFF0D7"><ellipse cx="35" cy="49" rx="2" ry="3" transform="rotate(-19 35 49)" /><ellipse cx="55" cy="49" rx="2" ry="3" /><ellipse cx="68" cy="59" rx="2" ry="3" transform="rotate(18 68 59)" /><ellipse cx="43" cy="69" rx="2" ry="3" /><ellipse cx="57" cy="76" rx="2" ry="3" /></g>
+      </>
+    ),
+    flower: (
+      <>
+        <g fill="#FFF9F4" stroke="#E3A3B5" strokeWidth="2.3">
+          <ellipse cx="50" cy="25" rx="13" ry="21" /><ellipse cx="50" cy="75" rx="13" ry="21" />
+          <ellipse cx="25" cy="50" rx="21" ry="13" /><ellipse cx="75" cy="50" rx="21" ry="13" />
+          <ellipse cx="32" cy="32" rx="13" ry="19" transform="rotate(-45 32 32)" /><ellipse cx="68" cy="32" rx="13" ry="19" transform="rotate(45 68 32)" />
+          <ellipse cx="32" cy="68" rx="13" ry="19" transform="rotate(45 32 68)" /><ellipse cx="68" cy="68" rx="13" ry="19" transform="rotate(-45 68 68)" />
+        </g>
+        <circle cx="50" cy="50" r="16" fill="#F3C978" stroke="#DFAC5D" strokeWidth="2" />
+        <circle cx="44" cy="47" r="1.8" fill="#B78648" /><circle cx="56" cy="47" r="1.8" fill="#B78648" />
+        <path d="M46 55c3 3 5 3 8 0" stroke="#B78648" strokeWidth="2" strokeLinecap="round" />
+      </>
+    ),
+    bow: (
+      <>
+        <path d="M45 39C23 19 8 25 9 46c1 18 17 21 36 10M55 39c22-20 37-14 36 7-1 18-17 21-36 10" fill="#F2A5B9" stroke="#BC6E87" strokeWidth="3" strokeLinejoin="round" />
+        <path d="M43 57 34 86l17-9 17 9-10-29" fill="#E98FA9" stroke="#BC6E87" strokeWidth="3" strokeLinejoin="round" />
+        <rect x="42" y="37" width="16" height="24" rx="7" fill="#D67998" stroke="#BC6E87" strokeWidth="3" />
+        <path d="m17 40 16 7m50-7-16 7" stroke="#FFD8E1" strokeWidth="3" strokeLinecap="round" />
+      </>
+    ),
+    envelope: (
+      <>
+        <rect x="10" y="23" width="80" height="58" rx="8" fill="#FFF9F4" stroke="#C9849A" strokeWidth="3" />
+        <path d="m12 30 34 27a7 7 0 0 0 8 0l34-27" fill="#F8D7DF" stroke="#C9849A" strokeWidth="3" strokeLinejoin="round" />
+        <path d="m12 76 29-24m47 24L59 52" stroke="#D8A4B1" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M50 67s-9-5-9-11c0-5 6-7 9-2 3-5 9-3 9 2 0 6-9 11-9 11Z" fill="#D47594" />
+      </>
+    ),
+    heart: (
+      <>
+        <path d="M50 86S12 65 12 39c0-13 8-22 20-22 8 0 14 4 18 11 4-7 10-11 18-11 12 0 20 9 20 22 0 26-38 47-38 47Z" fill="#F2AEC2" stroke="#CA718E" strokeWidth="3" />
+        <path d="M25 35c2-4 5-6 9-6" stroke="#FFF1F4" strokeWidth="5" strokeLinecap="round" />
+      </>
+    ),
+    star: (
+      <>
+        <path d="m50 7 9 30 31 13-31 10-9 31-10-31L9 50l31-13L50 7Z" fill="#F5D28A" stroke="#DBA95B" strokeWidth="3" strokeLinejoin="round" />
+        <path d="M50 28v13M38 50h-8" stroke="#FFF6DC" strokeWidth="3" strokeLinecap="round" />
+      </>
+    ),
+  }[kind];
+
+  return <svg className={`background-sticker ${className}`} viewBox="0 0 100 100" fill="none" focusable="false">{content}</svg>;
+}
+
+function BackgroundStickers() {
+  return (
+    <div className="background-stickers" aria-hidden="true">
+      <Sticker kind="strawberry" className="sticker-berry-one" />
+      <Sticker kind="flower" className="sticker-flower-one" />
+      <Sticker kind="bow" className="sticker-bow" />
+      <Sticker kind="envelope" className="sticker-envelope" />
+      <Sticker kind="heart" className="sticker-heart" />
+      <Sticker kind="flower" className="sticker-flower-two" />
+      <Sticker kind="strawberry" className="sticker-berry-two" />
+      <Sticker kind="star" className="sticker-star" />
+    </div>
+  );
+}
+
 function playOpeningChime() {
   try {
     const audio = new AudioContext();
@@ -115,6 +188,7 @@ export default function Home() {
       <div className="background-glow glow-one" aria-hidden="true" />
       <div className="background-glow glow-two" aria-hidden="true" />
       <div className="background-dots" aria-hidden="true" />
+      <BackgroundStickers />
 
       <header className="topbar">
         <div className="brand">
