@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 330" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Rái cá ôm thanh chocolate</title>
+  <ellipse cx="160" cy="309" rx="112" ry="15" fill="#A85D75" opacity=".13"/>
+  <path d="M248 210c43 2 52 51 17 77-24 18-50 8-56-9" stroke="#895043" stroke-width="28" stroke-linecap="round"/>
+  <path d="M75 203c-17 26-13 73 16 90 20 12 44 4 56-5" fill="#9B624F"/>
+  <path d="M245 202c18 28 14 73-14 90-22 13-48 2-62-5" fill="#9B624F"/>
+  <ellipse cx="160" cy="209" rx="91" ry="98" fill="#A96F59"/>
+  <ellipse cx="160" cy="223" rx="60" ry="72" fill="#F7E3CB"/>
+  <circle cx="94" cy="89" r="26" fill="#895043"/>
+  <circle cx="226" cy="89" r="26" fill="#895043"/>
+  <circle cx="94" cy="89" r="13" fill="#DCA795"/>
+  <circle cx="226" cy="89" r="13" fill="#DCA795"/>
+  <ellipse cx="160" cy="115" rx="98" ry="91" fill="#A96F59"/>
+  <path d="M103 125c5-23 22-35 57-34 35-1 52 11 57 34 7 33-18 66-57 66s-64-33-57-66Z" fill="#F7E3CB"/>
+  <ellipse cx="126" cy="116" rx="6" ry="8" fill="#392B2A"/>
+  <ellipse cx="194" cy="116" rx="6" ry="8" fill="#392B2A"/>
+  <path d="M153 135c3-4 11-4 14 0 1 4-3 9-7 9s-8-5-7-9Z" fill="#5D3D38"/>
+  <path d="M160 144v6m0 0c-5 7-11 8-17 3m17-3c5 7 11 8 17 3" stroke="#5D3D38" stroke-width="3" stroke-linecap="round"/>
+  <path d="M104 145l-28-7m28 14-30 2m142-9 28-7m-28 14 30 2" stroke="#8B6659" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="106" cy="136" rx="13" ry="8" fill="#EDABA9" opacity=".67"/>
+  <ellipse cx="214" cy="136" rx="13" ry="8" fill="#EDABA9" opacity=".67"/>
+  <g transform="rotate(-6 160 228)">
+    <rect x="112" y="190" width="96" height="77" rx="9" fill="#6F3D35"/>
+    <rect x="119" y="197" width="40" height="29" rx="4" fill="#8A5042"/>
+    <rect x="162" y="197" width="39" height="29" rx="4" fill="#8A5042"/>
+    <rect x="119" y="229" width="40" height="30" rx="4" fill="#8A5042"/>
+    <rect x="162" y="229" width="39" height="30" rx="4" fill="#8A5042"/>
+    <path d="m160 214 3-4c4-5 12 0 9 6-1 3-7 8-12 11-5-3-11-8-12-11-3-6 5-11 9-6l3 4Z" fill="#F7D8D7"/>
+  </g>
+  <ellipse cx="94" cy="231" rx="24" ry="18" fill="#A96F59" transform="rotate(-26 94 231)"/>
+  <ellipse cx="226" cy="231" rx="24" ry="18" fill="#A96F59" transform="rotate(26 226 231)"/>
+  <ellipse cx="120" cy="292" rx="31" ry="17" fill="#895043" transform="rotate(-13 120 292)"/>
+  <ellipse cx="200" cy="292" rx="31" ry="17" fill="#895043" transform="rotate(13 200 292)"/>
+</svg>
