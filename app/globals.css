@@ -296,6 +296,20 @@ button:focus-visible { outline: 3px solid var(--pink-accent); outline-offset: 5p
 .video-sparkle-one { left: -65px; top: 12%; }
 .video-sparkle-two { right: -65px; top: 22%; font-size: 20px; }
 
+.closing-layout { flex: 1; width: min(1130px, calc(100% - 104px)); margin-inline: auto; padding: 14px 0 110px; animation: scene-in .7s both; }
+.closing-scene { position: relative; width: min(760px, 100%); margin: clamp(44px, 7vh, 92px) auto 0; }
+.closing-card { position: relative; z-index: 2; min-height: 420px; border: 1px solid rgba(255,255,255,.9); border-radius: 24px; background: var(--paper); box-shadow: 0 30px 80px rgba(104,58,70,.18), 12px 12px 0 rgba(255,255,255,.24); }
+.closing-card-top { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; border-bottom: 1px solid var(--paper-edge); color: #a4667b; font-size: 10px; font-weight: 700; letter-spacing: .18em; }
+.closing-card-top svg { width: 23px; height: 23px; color: #d2889e; }
+.closing-card-body { min-height: 355px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 44px 64px 48px; text-align: center; }
+.closing-card-body h1 { max-width: 630px; margin: 24px 0 28px; color: #754253; font-family: "Mali", cursive; font-size: clamp(30px, 4vw, 46px); font-weight: 700; line-height: 1.38; letter-spacing: -.035em; text-wrap: balance; }
+.closing-card-body .music-hint { margin: 0 0 20px; color: var(--pink-deep); font-size: 12px; font-weight: 600; }
+.closing-card-heart { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 50%; background: #f8dce4; color: #ce7894; }
+.closing-card-heart svg { width: 26px; height: 26px; }
+.closing-otter { position: absolute; z-index: 3; right: -78px; bottom: -72px; width: 170px; height: auto; filter: drop-shadow(0 14px 12px rgba(109,65,68,.12)); pointer-events: none; }
+.closing-chocolate { position: absolute; z-index: 1; left: -82px; bottom: 12%; width: 80px; height: 108px; transform: rotate(-15deg); }
+.closing-sparkle { position: absolute; right: -56px; top: 9%; color: #cf819b; font-size: 30px; }
+
 .site-footer { min-height: 57px; padding-bottom: 20px; color: #996c79; font-size: 10px; letter-spacing: .05em; }
 
 @keyframes message-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -380,6 +394,15 @@ button:focus-visible { outline: 3px solid var(--pink-accent); outline-offset: 5p
   .video-frame-bottom { min-height: 34px; padding: 2px 9px 0; font-size: 12px; }
   .video-otter-wrap { right: -24px; bottom: -53px; width: 117px; }
   .video-chocolate { left: -17px; bottom: -34px; width: 53px; height: 72px; }
+  .closing-layout { width: min(100% - 32px, 760px); padding-top: 4px; padding-bottom: 95px; }
+  .closing-scene { margin-top: 34px; }
+  .closing-card { min-height: 380px; border-radius: 19px; }
+  .closing-card-top { min-height: 54px; padding-inline: 20px; font-size: 8px; }
+  .closing-card-body { min-height: 325px; padding: 36px 24px 42px; }
+  .closing-card-body h1 { margin: 21px 0 26px; font-size: clamp(26px, 6.8vw, 38px); }
+  .closing-otter { right: -13px; bottom: -61px; width: 106px; }
+  .closing-chocolate { left: -13px; bottom: -37px; width: 55px; height: 75px; }
+  .closing-sparkle { right: 2px; top: -32px; font-size: 22px; }
   .site-footer { font-size: 9px; }
 }
 

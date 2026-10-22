@@ -10,11 +10,12 @@ const introSteps = [
   "Sẵn sàng chưa, bắt đầu nè",
 ];
 
-type Stage = "intro" | "opening" | "letter" | "surprise";
+type Stage = "intro" | "opening" | "letter" | "surprise" | "closing";
 const LETTER_MUSIC_VOLUME = 0.26;
 const SURPRISE_MUSIC_VOLUME = 0.32;
 const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
 const SURPRISE_TRACK = "/audio/mua-yeu-dau-tu-giay-14.mp3";
+const CLOSING_TRACK = "/audio/mua-yeu-dau-tu-phut-1.mp3";
 
 function HeartIcon({ className = "" }: { className?: string }) {
   return (
@@ -143,6 +144,7 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const letterHeading = useRef<HTMLHeadingElement>(null);
   const surpriseHeading = useRef<HTMLHeadingElement>(null);
+  const closingHeading = useRef<HTMLHeadingElement>(null);
   const music = useRef<HTMLAudioElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const audioContext = useRef<AudioContext | null>(null);
@@ -151,12 +153,13 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   useEffect(() => {
     if (stage === "letter") letterHeading.current?.focus();
     if (stage === "surprise") surpriseHeading.current?.focus();
+    if (stage === "closing") closingHeading.current?.focus();
   }, [stage]);
 
   useEffect(() => {
     if (!soundOn) return;
     if (stage === "letter") setMusicVolume(LETTER_MUSIC_VOLUME, 1.5);
-    if (stage === "surprise") setMusicVolume(SURPRISE_MUSIC_VOLUME, 1.2);
+    if (stage === "surprise" || stage === "closing") setMusicVolume(SURPRISE_MUSIC_VOLUME, 1.2);
   }, [stage, soundOn]);
 
   useEffect(() => () => {
@@ -242,6 +245,12 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
 
   function retryVideo() {
     void video.current?.play().then(() => setVideoNeedsTap(false)).catch(() => setVideoNeedsTap(true));
+  }
+
+  function showClosing() {
+    switchMusic(CLOSING_TRACK);
+    setStage("closing");
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   function returnToLetter() {
@@ -435,10 +444,10 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
                   ref={video}
                   src="/video/loi-nhan-gui-fuu.mp4"
                   poster="/video/poster.jpg"
-                  loop
                   playsInline
                   preload="metadata"
                   onPlay={() => setVideoNeedsTap(false)}
+                  onEnded={showClosing}
                   aria-label="Video anh Dương Đỏ gửi em"
                 >
                   Trình duyệt của em chưa phát được video này.
@@ -457,6 +466,33 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
             <div className="video-otter-wrap" aria-hidden="true">
               <img src="/otter.svg" alt="" />
             </div>
+          </div>
+        </main>
+      )}
+
+      {stage === "closing" && (
+        <main className="closing-layout">
+          <button className="surprise-back" type="button" onClick={openSurprise}>
+            <ArrowIcon back />
+            Xem lại video
+          </button>
+
+          <div className="closing-scene">
+            <Chocolate className="closing-chocolate" />
+            <span className="closing-sparkle" aria-hidden="true">✳</span>
+            <article className="closing-card">
+              <div className="closing-card-top">
+                <span>LỜI NHẮN CUỐI CÙNG · 20.10</span>
+                <HeartIcon />
+              </div>
+              <div className="closing-card-body">
+                <span className="eyebrow">GỬI RIÊNG EM BÉ CỦA ANH</span>
+                <h1 ref={closingHeading} tabIndex={-1}>Chúc em bé những điều tốt đẹp nhất nhen , Love You To The Moon And Back &lt;3</h1>
+                {musicNeedsTap && <p className="music-hint">Chạm biểu tượng loa để bật nhạc nhé ♡</p>}
+                <div className="closing-card-heart" aria-hidden="true"><HeartIcon /></div>
+              </div>
+            </article>
+            <img src="/otter.svg" alt="" className="closing-otter" aria-hidden="true" />
           </div>
         </main>
       )}
