@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 
 const introSteps = [
   "Hello em bé của anh, lại là anh Dương Đỏ aka Hoàng Tử Kim Mã đây ạ",
@@ -12,7 +13,6 @@ const introSteps = [
 type Stage = "intro" | "opening" | "letter" | "surprise";
 const LETTER_MUSIC_VOLUME = 0.26;
 const SURPRISE_MUSIC_VOLUME = 0.08;
-const VIDEO_MUSIC_VOLUME = 0.015;
 const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
 const SURPRISE_TRACK = "/audio/mua-yeu-dau-tu-giay-14.mp3";
 
@@ -139,7 +139,7 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   const [stage, setStage] = useState<Stage>("intro");
   const [soundOn, setSoundOn] = useState(true);
   const [musicNeedsTap, setMusicNeedsTap] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [videoNeedsTap, setVideoNeedsTap] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const letterHeading = useRef<HTMLHeadingElement>(null);
   const surpriseHeading = useRef<HTMLHeadingElement>(null);
@@ -156,10 +156,8 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   useEffect(() => {
     if (!soundOn) return;
     if (stage === "letter") setMusicVolume(LETTER_MUSIC_VOLUME, 1.5);
-    if (stage === "surprise") {
-      setMusicVolume(videoPlaying ? VIDEO_MUSIC_VOLUME : SURPRISE_MUSIC_VOLUME, videoPlaying ? 0.35 : 1.2);
-    }
-  }, [stage, soundOn, videoPlaying]);
+    if (stage === "surprise") setMusicVolume(SURPRISE_MUSIC_VOLUME, 1.2);
+  }, [stage, soundOn]);
 
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current);
@@ -233,14 +231,17 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   }
 
   function openSurprise() {
+    setVideoNeedsTap(false);
+    // Mount the video during the button click so playback can use this user gesture.
+    flushSync(() => setStage("surprise"));
+    void video.current?.play().catch(() => setVideoNeedsTap(true));
     switchMusic(SURPRISE_TRACK);
-    setStage("surprise");
+    if (soundOn) setMusicVolume(SURPRISE_MUSIC_VOLUME, 1.2);
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   function returnToLetter() {
     video.current?.pause();
-    setVideoPlaying(false);
     switchMusic(LETTER_TRACK);
     setStage("letter");
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -413,6 +414,7 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
             <h1 ref={surpriseHeading} tabIndex={-1}>Một điều anh muốn nói với em</h1>
             <p>Anh có một đoạn video tự quay dành riêng cho em ♡</p>
             {musicNeedsTap && <p className="music-hint">Chạm biểu tượng loa để bật nhạc nhé ♡</p>}
+            {videoNeedsTap && <p className="music-hint">Nếu video chưa tự chạy, chạm nút phát trên video nhé ♡</p>}
           </div>
 
           <div className="video-scene">
@@ -433,16 +435,14 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
                   controls
                   playsInline
                   preload="metadata"
-                  onPlay={() => setVideoPlaying(true)}
-                  onPause={() => setVideoPlaying(false)}
-                  onEnded={() => setVideoPlaying(false)}
+                  onPlay={() => setVideoNeedsTap(false)}
                   aria-label="Video anh Dương Đỏ gửi em"
                 >
                   Trình duyệt của em chưa phát được video này.
                 </video>
               </div>
               <div className="video-frame-bottom">
-                <span>bấm phát để xem nhé</span>
+                <span>một lời nhắn chỉ dành cho em</span>
                 <span>♡</span>
               </div>
             </div>
