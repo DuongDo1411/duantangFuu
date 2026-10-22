@@ -12,6 +12,7 @@ const introSteps = [
 type Stage = "intro" | "opening" | "letter" | "surprise";
 const LETTER_MUSIC_VOLUME = 0.26;
 const SURPRISE_MUSIC_VOLUME = 0.08;
+const VIDEO_MUSIC_VOLUME = 0.015;
 const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
 const SURPRISE_TRACK = "/audio/mua-yeu-dau-tu-giay-14.mp3";
 
@@ -138,10 +139,12 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   const [stage, setStage] = useState<Stage>("intro");
   const [soundOn, setSoundOn] = useState(true);
   const [musicNeedsTap, setMusicNeedsTap] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const letterHeading = useRef<HTMLHeadingElement>(null);
   const surpriseHeading = useRef<HTMLHeadingElement>(null);
   const music = useRef<HTMLAudioElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
   const audioContext = useRef<AudioContext | null>(null);
   const musicGain = useRef<GainNode | null>(null);
 
@@ -153,12 +156,15 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   useEffect(() => {
     if (!soundOn) return;
     if (stage === "letter") setMusicVolume(LETTER_MUSIC_VOLUME, 1.5);
-    if (stage === "surprise") setMusicVolume(SURPRISE_MUSIC_VOLUME, 1.2);
-  }, [stage, soundOn]);
+    if (stage === "surprise") {
+      setMusicVolume(videoPlaying ? VIDEO_MUSIC_VOLUME : SURPRISE_MUSIC_VOLUME, videoPlaying ? 0.35 : 1.2);
+    }
+  }, [stage, soundOn, videoPlaying]);
 
   useEffect(() => () => {
     if (timer.current) clearTimeout(timer.current);
     music.current?.pause();
+    video.current?.pause();
     void audioContext.current?.close();
   }, []);
 
@@ -233,6 +239,8 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
   }
 
   function returnToLetter() {
+    video.current?.pause();
+    setVideoPlaying(false);
     switchMusic(LETTER_TRACK);
     setStage("letter");
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -403,7 +411,7 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
           <div className="surprise-intro">
             <span className="eyebrow">BẤT NGỜ NHO NHỎ · 20.10</span>
             <h1 ref={surpriseHeading} tabIndex={-1}>Một điều anh muốn nói với em</h1>
-            <p>Giữ lại một góc thật xinh cho đoạn video anh tự quay ♡</p>
+            <p>Anh có một đoạn video tự quay dành riêng cho em ♡</p>
             {musicNeedsTap && <p className="music-hint">Chạm biểu tượng loa để bật nhạc nhé ♡</p>}
           </div>
 
@@ -418,12 +426,23 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
                 <HeartIcon />
               </div>
               <div className="video-window">
-                <div className="video-window-heart" aria-hidden="true"><HeartIcon /></div>
-                <p>Video của anh sẽ ở đây</p>
-                <span>Chờ anh mang điều bất ngờ vào khung hình này nhé ♡</span>
+                <video
+                  ref={video}
+                  src="/video/loi-nhan-gui-fuu.mp4"
+                  poster="/video/poster.jpg"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  onPlay={() => setVideoPlaying(true)}
+                  onPause={() => setVideoPlaying(false)}
+                  onEnded={() => setVideoPlaying(false)}
+                  aria-label="Video anh Dương Đỏ gửi em"
+                >
+                  Trình duyệt của em chưa phát được video này.
+                </video>
               </div>
               <div className="video-frame-bottom">
-                <span>chỉ dành riêng cho em</span>
+                <span>bấm phát để xem nhé</span>
                 <span>♡</span>
               </div>
             </div>

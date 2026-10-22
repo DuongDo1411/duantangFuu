@@ -284,13 +284,8 @@ button:focus-visible { outline: 3px solid var(--pink-accent); outline-offset: 5p
 .video-frame-dots i { display: block; width: 7px; height: 7px; border-radius: 50%; background: #e8aebb; }
 .video-frame-dots i:nth-child(2) { background: #f3d19c; }
 .video-frame-dots i:nth-child(3) { background: #acd1b7; }
-.video-window { position: relative; isolation: isolate; min-height: 350px; aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; flex-direction: column; overflow: hidden; padding: 40px; border: 1px solid #efc8d1; border-radius: 18px; background: radial-gradient(circle at 22% 17%, rgba(255,255,255,.78), transparent 34%), radial-gradient(circle at 77% 78%, rgba(240,170,188,.62), transparent 35%), linear-gradient(135deg, #f8dfe5, #f5d7dd 55%, #f2d6e1); text-align: center; }
-.video-window::before { content: ""; position: absolute; inset: 15px; z-index: -1; border: 1px dashed rgba(183,82,112,.34); border-radius: 11px; }
-.video-window::after { content: "♡"; position: absolute; right: 8%; top: 9%; color: rgba(187,89,118,.42); font-family: "Mali", cursive; font-size: 60px; transform: rotate(15deg); }
-.video-window-heart { width: 80px; height: 80px; display: grid; place-items: center; border-radius: 50%; color: var(--pink-accent); background: rgba(255,250,247,.88); box-shadow: 0 12px 28px rgba(154,79,99,.15); transform: rotate(-10deg); }
-.video-window-heart svg { width: 43px; height: 43px; }
-.video-window p { margin: 22px 0 7px; color: #754253; font-family: "Mali", cursive; font-size: clamp(23px, 3vw, 34px); font-weight: 700; line-height: 1.35; }
-.video-window span { max-width: 31ch; color: #92566a; font-size: 14px; line-height: 1.6; }
+.video-window { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid #efc8d1; border-radius: 18px; background: #201821; }
+.video-window video { display: block; width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #201821; }
 .video-frame-bottom { min-height: 42px; padding: 5px 16px 0; color: #a4667b; font-family: "Mali", cursive; font-size: 14px; font-weight: 600; }
 .video-frame-bottom span:last-child { font-size: 22px; }
 .video-otter-wrap { position: absolute; z-index: 3; right: -110px; bottom: -68px; width: 190px; transform: rotate(7deg); pointer-events: none; }
@@ -380,12 +375,7 @@ button:focus-visible { outline: 3px solid var(--pink-accent); outline-offset: 5p
   .surprise-intro p { font-size: 13px; }
   .video-frame { padding: 9px; border-radius: 20px; }
   .video-frame-top { min-height: 36px; padding: 0 6px 6px; font-size: 8px; }
-  .video-window { min-height: 0; aspect-ratio: 4 / 3; padding: 25px; border-radius: 13px; }
-  .video-window::before { inset: 10px; }
-  .video-window-heart { width: 58px; height: 58px; }
-  .video-window-heart svg { width: 32px; height: 32px; }
-  .video-window p { margin-top: 16px; font-size: 23px; }
-  .video-window span { font-size: 12px; }
+  .video-window { border-radius: 13px; }
   .video-frame-bottom { min-height: 34px; padding: 2px 9px 0; font-size: 12px; }
   .video-otter-wrap { right: -24px; bottom: -53px; width: 117px; }
   .video-chocolate { left: -17px; bottom: -34px; width: 53px; height: 72px; }

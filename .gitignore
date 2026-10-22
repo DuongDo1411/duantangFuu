@@ -4,3 +4,4 @@ out
 .DS_Store
 *.tsbuildinfo
 assets/*.mp3
+assets/*.mp4
