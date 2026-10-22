@@ -12,7 +12,7 @@ const introSteps = [
 
 type Stage = "intro" | "opening" | "letter" | "surprise";
 const LETTER_MUSIC_VOLUME = 0.26;
-const SURPRISE_MUSIC_VOLUME = 0.22;
+const SURPRISE_MUSIC_VOLUME = 0.32;
 const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
 const SURPRISE_TRACK = "/audio/mua-yeu-dau-tu-giay-14.mp3";
 
