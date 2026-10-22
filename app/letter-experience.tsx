@@ -12,7 +12,7 @@ const introSteps = [
 
 type Stage = "intro" | "opening" | "letter" | "surprise";
 const LETTER_MUSIC_VOLUME = 0.26;
-const SURPRISE_MUSIC_VOLUME = 0.08;
+const SURPRISE_MUSIC_VOLUME = 0.14;
 const LETTER_TRACK = "/audio/nhac-nen-mashup.mp3";
 const SURPRISE_TRACK = "/audio/mua-yeu-dau-tu-giay-14.mp3";
 
@@ -240,6 +240,10 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
     window.scrollTo({ top: 0, behavior: "instant" });
   }
 
+  function retryVideo() {
+    void video.current?.play().then(() => setVideoNeedsTap(false)).catch(() => setVideoNeedsTap(true));
+  }
+
   function returnToLetter() {
     video.current?.pause();
     switchMusic(LETTER_TRACK);
@@ -414,7 +418,6 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
             <h1 ref={surpriseHeading} tabIndex={-1}>Một điều anh muốn nói với em</h1>
             <p>Anh có một đoạn video tự quay dành riêng cho em ♡</p>
             {musicNeedsTap && <p className="music-hint">Chạm biểu tượng loa để bật nhạc nhé ♡</p>}
-            {videoNeedsTap && <p className="music-hint">Nếu video chưa tự chạy, chạm nút phát trên video nhé ♡</p>}
           </div>
 
           <div className="video-scene">
@@ -432,7 +435,7 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
                   ref={video}
                   src="/video/loi-nhan-gui-fuu.mp4"
                   poster="/video/poster.jpg"
-                  controls
+                  loop
                   playsInline
                   preload="metadata"
                   onPlay={() => setVideoNeedsTap(false)}
@@ -440,6 +443,11 @@ export default function LetterExperience({ paragraphs }: { paragraphs: string[] 
                 >
                   Trình duyệt của em chưa phát được video này.
                 </video>
+                {videoNeedsTap && (
+                  <button className="video-start-fallback" type="button" onClick={retryVideo}>
+                    Chạm để phát video ♡
+                  </button>
+                )}
               </div>
               <div className="video-frame-bottom">
                 <span>một lời nhắn chỉ dành cho em</span>
